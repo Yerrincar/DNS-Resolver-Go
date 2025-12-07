@@ -1,9 +1,10 @@
 package main
 
 import (
-	"./packet"
 	"bytes"
 	"fmt"
+	"github.com/Yerrincar/DNS-Resolver-Go/network"
+	"github.com/Yerrincar/DNS-Resolver-Go/packet"
 	"os"
 )
 
@@ -54,7 +55,6 @@ func sendQuery(nameServer, domainName string, questionType uint16) []byte {
 		packet.NewHeader(22, 0, 1, 0, 0, 0),
 		packet.NewQuestion(domainName, questionType, packet.CLASS_IN),
 	)
-
 	client := network.NewClient(nameServer, 53)
 	return client.SendQuery(query)
 }
@@ -74,19 +74,19 @@ func getDnsPacketFromResponse(dnsResponse []byte) *DNSPacket {
 		fmt.Printf("Can't parse the response header: %v\n", err)
 		os.Exit(-1)
 	}
-	for range header.QdCount {
+	for range header.QDCount {
 		questions = append(questions, packet.ParseQuestion(reader))
 	}
 
-	for range header.AnCount {
+	for range header.ANCount {
 		answers = append(answers, packet.ParseRecord(reader))
 	}
 
-	for range header.NsCount {
+	for range header.NSCount {
 		authorities = append(authorities, packet.ParseRecord(reader))
 	}
 
-	for range header.ArCount {
+	for range header.ARCount {
 		additionals = append(additionals, packet.ParseRecord(reader))
 	}
 

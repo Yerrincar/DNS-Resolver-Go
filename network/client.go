@@ -1,4 +1,4 @@
-package client
+package network
 
 import (
 	"fmt"
@@ -19,7 +19,7 @@ func NewClient(address string, port int) *Client {
 	}
 }
 
-func (c *Client) sendQuery(query []byte) []byte {
+func (c *Client) SendQuery(query []byte) []byte {
 	conn, err := net.Dial("udp", fmt.Sprintf("%s:%d", c.ipAddress, c.port))
 	if err != nil {
 		log.Fatal("Connection error", err)

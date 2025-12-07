@@ -1,4 +1,4 @@
-module DNS-Resolver-Go
+module github.com/Yerrincar/DNS-Resolver-Go
 
 go 1.25.1
 
