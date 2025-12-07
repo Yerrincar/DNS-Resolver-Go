@@ -1,0 +1,26 @@
+package packet
+
+import (
+	"encoding/hex"
+	"testing"
+
+	"github.com/stretchr/testify/assert"
+)
+
+func TestQuestion(t *testing.T) {
+	t.Run("Should encode a question into bytes", func(t *testing.T) {
+
+		question := NewQuestion("dns.google.com", TYPE_A, CLASS_IN)
+
+		encodeQuestion := question.ToBytes()
+
+		expected, err := hex.DecodeString("3646e7306676f6f676c6503636f6d0000010001")
+		assert.NotNil(t, err)
+		assert.Equal(t, expected, encodeQuestion)
+	})
+
+	t.Run("Should encode the dns name", func(t *testing.T) {
+		encodedDnsName := encodeDnsName([]byte("dns.google.com"))
+		assert.Equal(t, []byte("\x03dns\x06google\x03com\x00"), encodedDnsName)
+	})
+}
